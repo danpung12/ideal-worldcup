@@ -115,6 +115,7 @@ export default function Page() {
                   className="cursor-pointer border-4 border-blue-500 p-2"
                 >
                   <img src={nowPair[0]?.img} width="200" height="200" />
+                  <p>{nowPair[0]?.name}</p>
                 </div>
 
                 <span className="self-center font-bold text-2xl">VS</span>
@@ -124,6 +125,7 @@ export default function Page() {
                   className="cursor-pointer border-4 border-red-500 p-2"
                 >
                   <img src={nowPair[1]?.img} width="200" height="200" />
+                  <p>{nowPair[1]?.name}</p>
                 </div>
               </div>
             </div>
