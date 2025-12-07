@@ -32,7 +32,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: ["*"],
+    origin: "*",
     methods: ["GET", "Post"],
   })
 );
@@ -41,7 +41,7 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: ["*"],
+    origin: "*",
     methods: ["GET", "POST"],
   },
 });
