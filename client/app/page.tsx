@@ -88,7 +88,6 @@ export default function Page() {
   return (
     <div>
       <h3>현재 방: {room}</h3>
-
       {gameStatus === "waiting" ? (
         <div>
           {/* 대기 중 */}
@@ -98,32 +97,37 @@ export default function Page() {
       ) : (
         // 게임 시작
         <div>
-          {roundText}
-          <div className="flex">
-            <div onClick={() => vote(nowPair[0]?.id)}>
-              <img src={nowPair[0]?.img} />
+          {gameStatus === "playing" && (
+            <div>
+              {roundText}
+              <div className="flex">
+                <div onClick={() => vote(nowPair[0]?.id)}>
+                  <img src={nowPair[0]?.img} />
+                </div>
+                vs
+                <div onClick={() => vote(nowPair[1]?.id)}>
+                  <img src={nowPair[1]?.img} />
+                </div>
+              </div>
             </div>
-            vs
-            <div onClick={() => vote(nowPair[1]?.id)}>
-              <img src={nowPair[1]?.img} />
+          )}
+
+          {gameStatus === "finished" && (
+            <div>
+              우승!
+              <img src={winner?.img} />
+              <p>{winner?.name}.</p>
             </div>
-          </div>
+          )}
+
+          {list.map((m, i) => (
+            <div key={i}>{m}</div>
+          ))}
+          <input value={msg} onChange={(e) => setMsg(e.target.value)} />
+          <button onClick={send}>전송</button>
         </div>
       )}
-
-      {gameStatus === "finished" && (
-        <div>
-          우승!
-          <img src={winner?.img} />
-          <p>{winner?.name}.</p>
-        </div>
-      )}
-
-      {list.map((m, i) => (
-        <div key={i}>{m}</div>
-      ))}
-      <input value={msg} onChange={(e) => setMsg(e.target.value)} />
-      <button onClick={send}>전송</button>
+      ;
     </div>
   );
 }
