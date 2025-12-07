@@ -14,7 +14,9 @@ export default function Page() {
     { id: number; name: string; img: string }[]
   >([]);
 
-  const [winner, setWinner] = useState(null);
+  const [winner, setWinner] = useState<{ name: string; img: string } | null>(
+    null
+  );
 
   useEffect(() => {
     // 소켓 연결
@@ -90,19 +92,25 @@ export default function Page() {
           <button onClick={startGame}>게임 시작</button>
         </div>
       ) : (
+        // 게임 시작
         <div className="flex">
-          {/* 게임 시작 */}
-          <div onClick={() => vote(nowPair[0].id)}>
-            <img src={nowPair[0].img} />
+          <div onClick={() => vote(nowPair[0]?.id)}>
+            <img src={nowPair[0]?.img} />
           </div>
           vs
-          <div onClick={() => vote(nowPair[1].id)}>
-            <img src={nowPair[1].img} />
+          <div onClick={() => vote(nowPair[1]?.id)}>
+            <img src={nowPair[1]?.img} />
           </div>
         </div>
       )}
 
-      {gameStatus === "finished" && <div></div>}
+      {gameStatus === "finished" && (
+        <div>
+          우승!
+          <img src={winner?.img} />
+          <p>{winner?.name}.</p>
+        </div>
+      )}
     </div>
   );
 }
