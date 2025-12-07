@@ -116,7 +116,9 @@ export default function Page() {
                 >
                   <img src={nowPair[0]?.img} width="200" height="200" />
                 </div>
-                vs
+
+                <span className="self-center font-bold text-2xl">VS</span>
+
                 <div
                   onClick={() => vote(nowPair[1]?.id)}
                   className="cursor-pointer border-4 border-red-500 p-2"
