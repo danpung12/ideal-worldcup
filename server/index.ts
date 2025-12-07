@@ -53,7 +53,7 @@ io.on("connection", (socket) => {
   socket.on("join_room", (roomName) => {
     // 방 입장
     socket.join(roomName);
-    console.log(`유저 (${socket.id})가 [${roomName}] 방에 입장함`);
+    console.log(`유저 (${socket.id})가 [${roomName}] 방에 입장함!`);
   });
 
   socket.on("chat_msg", (data) => {
