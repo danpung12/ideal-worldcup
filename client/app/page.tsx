@@ -74,7 +74,7 @@ export default function Page() {
   if (!isJoined) {
     // [입장 전] 로비
     return (
-      <div>
+      <div className="p-10 text-center">
         <input
           placeholder="방 번호"
           onChange={(e) => setRoom(e.target.value)}
