@@ -5,8 +5,8 @@
   "main": "dist/index.js", 
   "scripts": {
     "dev": "tsx watch index.ts",
-    "build": "tsc",              // 👈 1. 변환해라 (TypeScript -> JavaScript)
-    "start": "node dist/index.js" // 👈 2. 변환된 JS 파일(dist)을 실행해라
+    "build": "tsc",              
+    "start": "node dist/index.js" 
   },
   "dependencies": {
     "cors": "^2.8.5",
