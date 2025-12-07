@@ -92,7 +92,9 @@ export default function Page() {
         <div>
           {/* 대기 중 */}
 
-          <button onClick={startGame}>게임 시작</button>
+          <button onClick={startGame} className="bg-red-500 text-white p-2">
+            게임 시작
+          </button>
         </div>
       ) : (
         // 게임 시작
@@ -123,8 +125,14 @@ export default function Page() {
           {list.map((m, i) => (
             <div key={i}>{m}</div>
           ))}
-          <input value={msg} onChange={(e) => setMsg(e.target.value)} />
-          <button onClick={send}>전송</button>
+          <input
+            value={msg}
+            onChange={(e) => setMsg(e.target.value)}
+            className="border p-2 mr-2"
+          />
+          <button onClick={send} className="bg-blue-500 text-white p-2 mr-2">
+            전송
+          </button>
         </div>
       )}
       ;
