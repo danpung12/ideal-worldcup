@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "tsx watch index.ts",
-    "start": "npx tsx index.ts"
+    "start": "node --loader tsx index.ts"
   },
   "dependencies": {
     "cors": "^2.8.5",
