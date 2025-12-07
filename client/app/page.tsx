@@ -18,6 +18,8 @@ export default function Page() {
     null
   );
 
+  const [roundText, setRoundText] = useState("");
+
   useEffect(() => {
     // 소켓 연결
     if (!socket.connected) {
@@ -30,9 +32,15 @@ export default function Page() {
     });
 
     // 게임 시작하면? -> 게임상태 변경
-    socket.on("round_start", (pair) => {
+    socket.on("round_start", ({ pair, total }) => {
       setNowPair(pair);
       setGameStatus("playing");
+
+      if (total === 2) {
+        setRoundText("결승");
+      } else {
+        setRoundText(`${total}강`);
+      }
     });
 
     // 게임 끝 (우승자 나옴)
@@ -84,22 +92,21 @@ export default function Page() {
       {gameStatus === "waiting" ? (
         <div>
           {/* 대기 중 */}
-          {list.map((m, i) => (
-            <div key={i}>{m}</div>
-          ))}
-          <input value={msg} onChange={(e) => setMsg(e.target.value)} />
-          <button onClick={send}>전송</button>
+
           <button onClick={startGame}>게임 시작</button>
         </div>
       ) : (
         // 게임 시작
-        <div className="flex">
-          <div onClick={() => vote(nowPair[0]?.id)}>
-            <img src={nowPair[0]?.img} />
-          </div>
-          vs
-          <div onClick={() => vote(nowPair[1]?.id)}>
-            <img src={nowPair[1]?.img} />
+        <div>
+          {roundText}
+          <div className="flex">
+            <div onClick={() => vote(nowPair[0]?.id)}>
+              <img src={nowPair[0]?.img} />
+            </div>
+            vs
+            <div onClick={() => vote(nowPair[1]?.id)}>
+              <img src={nowPair[1]?.img} />
+            </div>
           </div>
         </div>
       )}
@@ -111,6 +118,12 @@ export default function Page() {
           <p>{winner?.name}.</p>
         </div>
       )}
+
+      {list.map((m, i) => (
+        <div key={i}>{m}</div>
+      ))}
+      <input value={msg} onChange={(e) => setMsg(e.target.value)} />
+      <button onClick={send}>전송</button>
     </div>
   );
 }

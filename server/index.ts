@@ -56,11 +56,12 @@ io.on("connection", (socket) => {
     console.log(`유저 (${socket.id})가 [${roomName}] 방에 입장함!`);
   });
 
+  // [메세지 전송]
   socket.on("chat_msg", (data) => {
-    // 메세지 전송
     io.to(data.room).emit("chat_msg", data); // data에서 room 뽑아 방 사람에게 전송
   });
 
+  // [게임 시작]
   socket.on("game_start", (roomName) => {
     console.log(`${roomName} 게임 시작!!`);
 
@@ -71,7 +72,11 @@ io.on("connection", (socket) => {
     };
 
     const round1 = [CANDIDATES[0], CANDIDATES[1]];
-    io.to(roomName).emit("round_start", round1);
+
+    io.to(roomName).emit("round_start", {
+      pair: round1,
+      total: CANDIDATES.length,
+    });
   });
 
   socket.on("vote", ({ room, winnerId }) => {
@@ -96,10 +101,10 @@ io.on("connection", (socket) => {
       game.nowIdx = 0;
     }
     // 다음 대결 안내
-    io.to(room).emit(
-      "round_start",
-      game.candidates.slice(game.nowIdx, game.nowIdx + 2)
-    );
+    io.to(room).emit("round_start", {
+      pair: game.candidates.slice(game.nowIdx, game.nowIdx + 2),
+      total: game.candidates.length,
+    });
   });
 
   socket.on("disconnect", () => console.log("나감:", socket.id));
