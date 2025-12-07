@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "tsx watch index.ts",
     "build": "echo 'No build needed'",
-    "start": "node --import tsx index.ts"
+    "start": "./node_modules/.bin/tsx index.ts"
   },
   "dependencies": {
     "cors": "^2.8.5",
