@@ -128,22 +128,22 @@ export default function Page() {
               <p>{winner?.name}.</p>
             </div>
           )}
-
-          <div className="h-40 overflow-y-auto border mb-4">
-            {list.map((m, i) => (
-              <div key={i}>{m}</div>
-            ))}
-          </div>
-          <input
-            value={msg}
-            onChange={(e) => setMsg(e.target.value)}
-            className="border p-2 mr-2"
-          />
-          <button onClick={send} className="bg-blue-500 text-white p-2 mr-2">
-            전송
-          </button>
         </div>
       )}
+
+      <div className="h-40 overflow-y-auto border mb-4">
+        {list.map((m, i) => (
+          <div key={i}>{m}</div>
+        ))}
+      </div>
+      <input
+        value={msg}
+        onChange={(e) => setMsg(e.target.value)}
+        className="border p-2 mr-2"
+      />
+      <button onClick={send} className="bg-blue-500 text-white p-2 mr-2">
+        전송
+      </button>
     </div>
   );
 }
