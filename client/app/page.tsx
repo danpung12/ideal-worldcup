@@ -78,16 +78,23 @@ export default function Page() {
         <input
           placeholder="방 번호"
           onChange={(e) => setRoom(e.target.value)}
+          className="border p-2 mr-2"
         />
-        <button onClick={joinRoom}> 입장 </button>
+        <button
+          onClick={joinRoom}
+          className="bg-green-500 text-white p-2 rounded"
+        >
+          {" "}
+          입장{" "}
+        </button>
       </div>
     );
   }
 
   // [입장 후]
   return (
-    <div>
-      <h3>현재 방: {room}</h3>
+    <div className="p-10 text-center">
+      <h3>🏠 현재 방: {room}</h3>
       {gameStatus === "waiting" ? (
         <div>
           {/* 대기 중 */}
@@ -122,9 +129,11 @@ export default function Page() {
             </div>
           )}
 
-          {list.map((m, i) => (
-            <div key={i}>{m}</div>
-          ))}
+          <div className="h-40 overflow-y-auto border mb-4">
+            {list.map((m, i) => (
+              <div key={i}>{m}</div>
+            ))}
+          </div>
           <input
             value={msg}
             onChange={(e) => setMsg(e.target.value)}
@@ -135,7 +144,6 @@ export default function Page() {
           </button>
         </div>
       )}
-      ;
     </div>
   );
 }
