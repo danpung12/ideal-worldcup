@@ -62,7 +62,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("game_start", (roomName) => {
-    console.log(`${roomName} 게임 시작!`);
+    console.log(`${roomName} 게임 시작!!`);
 
     roomStates[roomName] = {
       candidates: [...CANDIDATES],
