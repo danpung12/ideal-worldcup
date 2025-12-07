@@ -110,12 +110,18 @@ export default function Page() {
             <div>
               {roundText}
               <div className="flex">
-                <div onClick={() => vote(nowPair[0]?.id)}>
-                  <img src={nowPair[0]?.img} />
+                <div
+                  onClick={() => vote(nowPair[0]?.id)}
+                  className="cursor-pointer border-4 border-blue-500 p-2"
+                >
+                  <img src={nowPair[0]?.img} width="200" height="200" />
                 </div>
                 vs
-                <div onClick={() => vote(nowPair[1]?.id)}>
-                  <img src={nowPair[1]?.img} />
+                <div
+                  onClick={() => vote(nowPair[1]?.id)}
+                  className="cursor-pointer border-4 border-red-500 p-2"
+                >
+                  <img src={nowPair[1]?.img} width="200" height="200" />
                 </div>
               </div>
             </div>

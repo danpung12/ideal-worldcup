@@ -4,26 +4,10 @@ import { Server } from "socket.io";
 import cors from "cors";
 
 const CANDIDATES = [
-  {
-    id: 1,
-    name: "카리나 (aespa)",
-    img: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/240527_Karina_%28aespa%29.jpg/600px-240527_Karina_%28aespa%29.jpg",
-  },
-  {
-    id: 2,
-    name: "장원영 (IVE)",
-    img: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/240115_Jang_Won-young.jpg/600px-240115_Jang_Won-young.jpg",
-  },
-  {
-    id: 3,
-    name: "민지 (NewJeans)",
-    img: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/NewJeans_Minji_at_Blue_Dragon_Film_Awards_on_November_24%2C_2023.jpg/600px-NewJeans_Minji_at_Blue_Dragon_Film_Awards_on_November_24%2C_2023.jpg",
-  },
-  {
-    id: 4,
-    name: "안유진 (IVE)",
-    img: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/231202_IVE_Yujin_at_Melon_Music_Awards_Red_Carpet.jpg/600px-231202_IVE_Yujin_at_Melon_Music_Awards_Red_Carpet.jpg",
-  },
+  { id: 1, name: "카리나 (aespa)", img: "/images/카리나.jpg" },
+  { id: 2, name: "장원영 (IVE)", img: "/images/장원영.jpg" },
+  { id: 3, name: "민지 (NewJeans)", img: "/images/민지.jpg" },
+  { id: 4, name: "안유진 (IVE)", img: "/images/안유진.jpg" },
 ];
 
 const roomStates: any = {};
