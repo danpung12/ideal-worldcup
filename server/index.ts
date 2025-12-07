@@ -106,3 +106,4 @@ io.on("connection", (socket) => {
 });
 
 server.listen(4000, () => console.log("서버 켜짐: 4000"));
+console.log("🔥🔥🔥 [버전 확인] CORS 만능키(*) 적용된 서버 켜짐! 🔥🔥🔥");
