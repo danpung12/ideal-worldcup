@@ -27,13 +27,13 @@ const CANDIDATES = [
 const roomStates = {};
 const app = express();
 app.use(cors({
-    origin: "http://localhost:3000",
-    methods: ["GET", "Post"],
+    origin: "*",
+    methods: ["GET", "POST"],
 }));
 const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
-        origin: "http://localhost:3000",
+        origin: "*",
         methods: ["GET", "POST"],
     },
 });
@@ -43,7 +43,7 @@ io.on("connection", (socket) => {
     socket.on("join_room", (roomName) => {
         // 방 입장
         socket.join(roomName);
-        console.log(`유저 (${socket.id})가 [${roomName}] 방에 입장함`);
+        console.log(`유저 (${socket.id})가 [${roomName}] 방에 입장함!`);
     });
     socket.on("chat_msg", (data) => {
         // 메세지 전송
@@ -82,3 +82,4 @@ io.on("connection", (socket) => {
     socket.on("disconnect", () => console.log("나감:", socket.id));
 });
 server.listen(4000, () => console.log("서버 켜짐: 4000"));
+console.log("🔥🔥🔥 [버전 확인] CORS 만능키(*) 적용된 서버 켜짐! 🔥🔥🔥");
