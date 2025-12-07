@@ -2,11 +2,11 @@
   "name": "server",
   "version": "1.0.0",
   "type": "module",
-  "main": "index.js",
+  "main": "dist/index.js", 
   "scripts": {
     "dev": "tsx watch index.ts",
-    "build": "echo 'No build needed'",
-    "start": "./node_modules/.bin/tsx index.ts"
+    "build": "tsc",              // 👈 1. 변환해라 (TypeScript -> JavaScript)
+    "start": "node dist/index.js" // 👈 2. 변환된 JS 파일(dist)을 실행해라
   },
   "dependencies": {
     "cors": "^2.8.5",
