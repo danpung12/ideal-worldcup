@@ -3,12 +3,14 @@ import http from "http";
 import { Server } from "socket.io";
 import cors from "cors";
 
+
 const CANDIDATES = [
   { id: 1, name: "카리나 (aespa)", img: "/images/카리나.jpg" },
   { id: 2, name: "장원영 (IVE)", img: "/images/장원영.jpg" },
   { id: 3, name: "민지 (뉴진스)", img: "/images/민지.jpg" },
   { id: 4, name: "안유진 (IVE)", img: "/images/안유진.jpg" },
 ];
+
 
 const roomStates: any = {};
 
