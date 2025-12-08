@@ -6,7 +6,7 @@ import cors from "cors";
 const CANDIDATES = [
   { id: 1, name: "카리나 (aespa)", img: "/images/카리나.jpg" },
   { id: 2, name: "장원영 (IVE)", img: "/images/장원영.jpg" },
-  { id: 3, name: "민지 (NewJeans)", img: "/images/민지.jpg" },
+  { id: 3, name: "민지 (뉴진스)", img: "/images/민지.jpg" },
   { id: 4, name: "안유진 (IVE)", img: "/images/안유진.jpg" },
 ];
 
@@ -34,15 +34,25 @@ io.on("connection", (socket) => {
   // 연결 시
   console.log("접속:", socket.id); // 접속:id 띄워 줌
 
-  socket.on("join_room", (roomName) => {
+  socket.on("join_room", (roomName, nickname) => {
     // 방 입장
     socket.join(roomName);
     console.log(`유저 (${socket.id})가 [${roomName}] 방에 입장함!`);
+
+    socket.data.nickname = nickname;
+
+    io.to(roomName).emit("chat_msg", {
+      nickname: "📢 시스템",
+      msg: `${nickname}님이 입장하셨습니다!`,
+    });
   });
 
   // [메세지 전송]
   socket.on("chat_msg", (data) => {
-    io.to(data.room).emit("chat_msg", data); // data에서 room 뽑아 방 사람에게 전송
+    io.to(data.room).emit("chat_msg", {
+      nickname: socket.data.nickname,
+      msg: data.msg,
+    }); // data에서 room 뽑아 방 사람에게 전송
   });
 
   // [게임 시작]
