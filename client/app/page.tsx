@@ -132,7 +132,7 @@ export default function Page() {
 
   // [입장 후]
   return (
-    <div className="p-10 text-center">
+    <div className="p-5 text-center">
       <h3>🏠 현재 방: {room}</h3>
       {gameStatus === "waiting" ? (
         <div>
@@ -191,14 +191,17 @@ export default function Page() {
         ))}
         <div ref={chatEndRoll} />
       </div>
-      <div className="flex">
+      <div className="flex items-center justify-center ">
         <input
           value={msg}
           onChange={(e) => setMsg(e.target.value)}
           className="border p-2 mr-2"
           onKeyDown={(e) => e.key === "Enter" && send()}
         />
-        <button onClick={send} className="bg-blue-500 text-white p-2 mr-2">
+        <button
+          onClick={send}
+          className="bg-blue-500 text-white p-2 mr-2 flex-shrink:1"
+        >
           전송
         </button>
       </div>
