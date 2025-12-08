@@ -21,6 +21,9 @@ export default function Page() {
 
   const [roundText, setRoundText] = useState("");
   const [nickname, setNickname] = useState("");
+  const [userList, setUserList] = useState<{ id: string; nickname: string }[]>(
+    []
+  );
 
   const chatEndRoll = useRef<HTMLDivElement>(null);
 
@@ -62,6 +65,10 @@ export default function Page() {
     socket.on("game_over", (finalWinner) => {
       setWinner(finalWinner);
       setGameStatus("finished");
+    });
+
+    socket.on("user_list", (users) => {
+      setUserList(users);
     });
   }, []);
 
@@ -126,84 +133,107 @@ export default function Page() {
             </button>
           </div>
         </div>
+        );
       </div>
     );
   }
 
   // [입장 후]
   return (
-    <div className="p-5 text-center">
-      <h3>🏠 현재 방: {room}</h3>
-      {gameStatus === "waiting" ? (
-        <div>
-          {/* 대기 중 */}
-
-          <button onClick={startGame} className="bg-red-500 text-white p-2">
-            게임 시작
-          </button>
+    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
+      <div className="flex flex-col md:flex-row w-full max-w-6xl gap-4 h-[700px]">
+        <div className="w-full md:w-64 bg-white rounded-2xl shadow-xl p-4 overflow-y-auto flex-shrink-0 border border-gray-200">
+          <h3 className="font-bold text-gray-700 mb-4 border-b pb-2 flex items-center gap-2">
+            👥 접속자{" "}
+            <span className="bg-gray-200 text-gray-600 text-xs py-0.5 px-2 rounded-full">
+              {userList.length}
+            </span>
+          </h3>
+          <ul className="space-y-2">
+            {userList.map((user) => (
+              <li>{user.nickname}</li>
+            ))}
+          </ul>
         </div>
-      ) : (
-        // 게임 시작
-        <div>
-          {gameStatus === "playing" && (
+
+        <div className="flex-1 bg-white rounded-2xl shadow-xl overflow-hidden p-6 relative flex flex-col border border-gray-200 ">
+          <span className="font-bold text-gray-800 text-lg text-center">
+            🏠 {room}번 방
+          </span>
+          {gameStatus === "waiting" ? (
             <div>
-              {roundText}
-              <div className="flex flex-row md:flex-row items-center justify-center ">
-                <div
-                  onClick={() => vote(nowPair[0]?.id)}
-                  className="cursor-pointer border-4 border-blue-500 p-2"
-                >
-                  <img src={nowPair[0]?.img} width="200" height="200" />
+              {/* 대기 중 */}
 
-                  <p className="text-black text-xl font-bold">
-                    {nowPair[0]?.name}
-                  </p>
+              <button onClick={startGame} className="bg-red-500 text-white p-2">
+                게임 시작
+              </button>
+            </div>
+          ) : (
+            // 게임 시작
+            <div>
+              {gameStatus === "playing" && (
+                <div className="text-center ">
+                  <h2 className="text-3xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 to-pink-500 mb-6 drop-shadow-sm">
+                    {roundText}
+                  </h2>
+                  <div className="flex flex-row md:flex-row items-center justify-center ">
+                    <div
+                      onClick={() => vote(nowPair[0]?.id)}
+                      className="cursor-pointer border-4 border-blue-500 p-2"
+                    >
+                      <img src={nowPair[0]?.img} width="200" height="200" />
+
+                      <p className="text-black text-xl font-bold">
+                        {nowPair[0]?.name}
+                      </p>
+                    </div>
+
+                    <span className="self-center font-bold text-2xl">VS</span>
+
+                    <div
+                      onClick={() => vote(nowPair[1]?.id)}
+                      className="cursor-pointer border-4 border-red-500 p-2"
+                    >
+                      <img src={nowPair[1]?.img} width="200" height="200" />
+                      <p className="text-black text-xl font-bold">
+                        {nowPair[1]?.name}
+                      </p>
+                    </div>
+                  </div>
                 </div>
+              )}
 
-                <span className="self-center font-bold text-2xl">VS</span>
-
-                <div
-                  onClick={() => vote(nowPair[1]?.id)}
-                  className="cursor-pointer border-4 border-red-500 p-2"
-                >
-                  <img src={nowPair[1]?.img} width="200" height="200" />
-                  <p className="text-black text-xl font-bold">
-                    {nowPair[1]?.name}
-                  </p>
+              {gameStatus === "finished" && (
+                <div className="text-center">
+                  우승!
+                  <img src={winner?.img} width="200" height="200" />
+                  <p>{winner?.name}.</p>
                 </div>
-              </div>
+              )}
             </div>
           )}
 
-          {gameStatus === "finished" && (
-            <div>
-              우승!
-              <img src={winner?.img} />
-              <p>{winner?.name}.</p>
-            </div>
-          )}
+          <div className="h-40 overflow-y-auto border mb-4">
+            {list.map((m, i) => (
+              <div key={i}>{m}</div>
+            ))}
+            <div ref={chatEndRoll} />
+          </div>
+          <div className="flex items-center justify-center ">
+            <input
+              value={msg}
+              onChange={(e) => setMsg(e.target.value)}
+              className="border p-2 mr-2"
+              onKeyDown={(e) => e.key === "Enter" && send()}
+            />
+            <button
+              onClick={send}
+              className="bg-blue-500 text-white p-2 mr-2 flex-shrink:1"
+            >
+              전송
+            </button>
+          </div>
         </div>
-      )}
-
-      <div className="h-40 overflow-y-auto border mb-4">
-        {list.map((m, i) => (
-          <div key={i}>{m}</div>
-        ))}
-        <div ref={chatEndRoll} />
-      </div>
-      <div className="flex items-center justify-center ">
-        <input
-          value={msg}
-          onChange={(e) => setMsg(e.target.value)}
-          className="border p-2 mr-2"
-          onKeyDown={(e) => e.key === "Enter" && send()}
-        />
-        <button
-          onClick={send}
-          className="bg-blue-500 text-white p-2 mr-2 flex-shrink:1"
-        >
-          전송
-        </button>
       </div>
     </div>
   );
