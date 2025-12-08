@@ -36,7 +36,7 @@ io.on("connection", (socket) => {
     });
     // [메세지 전송]
     socket.on("chat_msg", (data) => {
-        io.to(data.room).emit("chat_msg", {
+        socket.to(data.room).emit("chat_msg", {
             nickname: socket.data.nickname,
             msg: data.msg,
         }); // data에서 room 뽑아 방 사람에게 전송

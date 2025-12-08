@@ -66,6 +66,8 @@ export default function Page() {
   const send = () => {
     const data = { room: room, msg: msg };
     socket.emit("chat_msg", data);
+
+    setList((prev) => [...prev, `${nickname}: ${msg}`]);
     setMsg("");
   };
 
