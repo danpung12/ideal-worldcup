@@ -3,14 +3,12 @@ import http from "http";
 import { Server } from "socket.io";
 import cors from "cors";
 
-
 const CANDIDATES = [
   { id: 1, name: "카리나 (aespa)", img: "/images/카리나.jpg" },
   { id: 2, name: "장원영 (IVE)", img: "/images/장원영.jpg" },
   { id: 3, name: "민지 (뉴진스)", img: "/images/민지.jpg" },
   { id: 4, name: "안유진 (IVE)", img: "/images/안유진.jpg" },
 ];
-
 
 const roomStates: any = {};
 
@@ -39,9 +37,23 @@ io.on("connection", (socket) => {
   socket.on("join_room", (roomName, nickname) => {
     // 방 입장
     socket.join(roomName);
+
+    socket.data.nickname = nickname;
+    socket.data.room = roomName;
+
+    if (!roomStates[roomName]) {
+      roomStates[roomName] = {
+        users: [],
+      };
+    }
+
     console.log(`유저 (${socket.id})가 [${roomName}] 방에 입장함!`);
 
     socket.data.nickname = nickname;
+
+    roomStates[roomName].users.push({ id: socket.id, nickname: nickname });
+
+    io.to(roomName).emit("user_list", roomStates[roomName].users);
 
     io.to(roomName).emit("chat_msg", {
       nickname: "📢 시스템",
@@ -62,6 +74,7 @@ io.on("connection", (socket) => {
     console.log(`${roomName} 게임 시작!!`);
 
     roomStates[roomName] = {
+      users: [],
       candidates: [...CANDIDATES],
       winners: [],
       nowIdx: 0,
@@ -103,7 +116,14 @@ io.on("connection", (socket) => {
     });
   });
 
-  socket.on("disconnect", () => console.log("나감:", socket.id));
+  socket.on("disconnect", () => {
+    const room = socket.data.room;
+
+    roomStates[room].users = roomStates[room].users.filter(
+      (user: any) => user.id !== socket.id
+    );
+    io.to(room).emit("user_list", roomStates[room].users);
+  });
 });
 
 server.listen(4000, () => console.log("서버 켜짐: 4000"));

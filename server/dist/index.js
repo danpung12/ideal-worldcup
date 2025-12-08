@@ -27,8 +27,17 @@ io.on("connection", (socket) => {
     socket.on("join_room", (roomName, nickname) => {
         // 방 입장
         socket.join(roomName);
+        socket.data.nickname = nickname;
+        socket.data.room = roomName;
+        if (!roomStates[roomName]) {
+            roomStates[roomName] = {
+                users: [],
+            };
+        }
         console.log(`유저 (${socket.id})가 [${roomName}] 방에 입장함!`);
         socket.data.nickname = nickname;
+        roomStates[roomName].users.push({ id: socket.id, nickname: nickname });
+        io.to(roomName).emit("user_list", roomStates[roomName].users);
         io.to(roomName).emit("chat_msg", {
             nickname: "📢 시스템",
             msg: `${nickname}님이 입장하셨습니다!`,
@@ -45,6 +54,7 @@ io.on("connection", (socket) => {
     socket.on("game_start", (roomName) => {
         console.log(`${roomName} 게임 시작!!`);
         roomStates[roomName] = {
+            users: [],
             candidates: [...CANDIDATES],
             winners: [],
             nowIdx: 0,
@@ -78,7 +88,11 @@ io.on("connection", (socket) => {
             total: game.candidates.length,
         });
     });
-    socket.on("disconnect", () => console.log("나감:", socket.id));
+    socket.on("disconnect", () => {
+        const room = socket.data.room;
+        roomStates[room].users = roomStates[room].users.filter((user) => user.id !== socket.id);
+        io.to(room).emit("user_list", roomStates[room].users);
+    });
 });
 server.listen(4000, () => console.log("서버 켜짐: 4000"));
 console.log("🔥🔥🔥 [버전 확인] CORS 만능키(*) 적용된 서버 켜짐! 🔥🔥🔥");

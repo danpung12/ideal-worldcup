@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { socket } from "../lib/socket";
 
 export default function Page() {
@@ -21,6 +21,8 @@ export default function Page() {
 
   const [roundText, setRoundText] = useState("");
   const [nickname, setNickname] = useState("");
+
+  const chatEndRoll = useRef<HTMLDivElement>(null);
 
   const containerStyle =
     "min-h-screen bg-gray-100 flex items-center justify-center p-4";
@@ -62,6 +64,10 @@ export default function Page() {
       setGameStatus("finished");
     });
   }, []);
+
+  useEffect(() => {
+    chatEndRoll.current?.scrollIntoView({ behavior: "smooth" });
+  }, [list]);
 
   const send = () => {
     const data = { room: room, msg: msg };
@@ -183,16 +189,19 @@ export default function Page() {
         {list.map((m, i) => (
           <div key={i}>{m}</div>
         ))}
+        <div ref={chatEndRoll} />
       </div>
-      <input
-        value={msg}
-        onChange={(e) => setMsg(e.target.value)}
-        className="border p-2 mr-2"
-        onKeyDown={(e) => e.key === "Enter" && send()}
-      />
-      <button onClick={send} className="bg-blue-500 text-white p-2 mr-2">
-        전송
-      </button>
+      <div className="flex">
+        <input
+          value={msg}
+          onChange={(e) => setMsg(e.target.value)}
+          className="border p-2 mr-2"
+          onKeyDown={(e) => e.key === "Enter" && send()}
+        />
+        <button onClick={send} className="bg-blue-500 text-white p-2 mr-2">
+          전송
+        </button>
+      </div>
     </div>
   );
 }
