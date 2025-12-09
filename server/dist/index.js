@@ -60,7 +60,7 @@ io.on("connection", (socket) => {
             nowIdx: 0,
             vote: {},
             voteUser: [],
-            timer: null
+            timer: null,
         };
         const round1 = [CANDIDATES[0], CANDIDATES[1]];
         io.to(roomName).emit("round_start", {
@@ -73,9 +73,6 @@ io.on("connection", (socket) => {
         const winner = game.candidates.find((c) => c.id == winnerId);
         game.winners.push(winner);
         game.nowIdx += 2;
-        if (game.voteUser.include(socket.id)) {
-            game.voteUser.push(socket.id);
-        }
         // 라운드 종료 체크 (현재 인덱스가 전체 길이와 같으면)
         if (game.nowIdx >= game.candidates.length) {
             // 승리자가 한명이라면? (우승)
